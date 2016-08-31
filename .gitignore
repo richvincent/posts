@@ -1,3 +1,5 @@
+env
+__pycache__
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -87,3 +89,14 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+#swap
+[._]*.s[a-w][a-z]
+[._]s[a-w][a-z]
+#session
+Session.vim
+#temporary
+.netrwhist
+*~
+# auto-generated tag files
+tags
