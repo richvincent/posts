@@ -240,5 +240,34 @@ class TestAPI(unittest.TestCase):
         data = json.loads(response.data.decode("ascii"))
         self.assertEqual(data["message"], "'body' is a required property")
 
+    def test_post_update_with_querystring(self):
+        """ Modifying an existing post using a querystring """
+        postA = models.Post(title="Example Post A", body="Just a test")
+
+        session.add(postA)
+        session.commit()
+
+        data = {
+            "id": 1,
+            "title": "Updated example post A",
+            "body": "Updated just a test"
+        }
+
+        response = self.client.put("/api/post",
+                                   data=json.dumps(data),
+                                   content_type="application/json",
+                                   headers=[("Accept", "application/json")]
+                                   )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.mimetype, "application/json")
+        self.assertEqual(urlparse(response.headers.get("Location")).path,
+                         "/api/posts/1")
+
+        data = json.loads(response.data.decode("ascii"))
+        self.assertEqual(data["id"], 1)
+        self.assertEqual(data["title"], "Updated example post A")
+        self.assertEqual(data["body"], "Updated just a test")
+
 if __name__ == "__main__":
     unittest.main()
