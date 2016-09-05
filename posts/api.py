@@ -123,12 +123,14 @@ def posts_post():
                     mimetype="application/json")
 
 
-@app.route("/api/post/<int:id>", methods=["PUT"])
-def posts_put():
+@app.route("/api/post/", methods=["PUT"])
+def post_put():
     """ Modify an existing post using a querystring """
-    # Get the post from the database
-    post = session.query(models.Post).get(id)
+    data = request.json
+    print(data)
 
+    # Get the post from the database
+    post = session.query(models.Post).get(data['id'])
     # Check whether the post exists
     # If not return a 404 with a helpful message
     if not post:
@@ -139,7 +141,7 @@ def posts_put():
     # Check that the JSON supplied is valid
     # If not you return a 422 Unprocessable Entity
     try:
-        validate(data, post_schema)
+        validate(data, existing_post_schema)
     except ValidationError as error:
         data = {"message": error.message}
         return Response(json.dumps(data), 422, mimetype="application/json")

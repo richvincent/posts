@@ -248,18 +248,18 @@ class TestAPI(unittest.TestCase):
         session.commit()
 
         data = {
-            "id": 1,
+            "id": postA.id,
             "title": "Updated example post A",
             "body": "Updated just a test"
         }
 
-        response = self.client.put("/api/post",
+        response = self.client.put("/api/post/",
                                    data=json.dumps(data),
                                    content_type="application/json",
                                    headers=[("Accept", "application/json")]
                                    )
 
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 201)
         self.assertEqual(response.mimetype, "application/json")
         self.assertEqual(urlparse(response.headers.get("Location")).path,
                          "/api/posts/1")
